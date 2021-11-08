@@ -16,9 +16,9 @@
             <h:form id="form">
                 <p:growl id="growl" life="3000" />
 
-                <p:dataTable id="tbl-estudiantes" value="#{estudianteBean.lstEstudiantes}" var="estudiante" styleClass="tabla" scrollable="true" scrollRows="7">
+                <p:dataTable id="tbl-estudiantes" value="#{estudianteBean.lstEstudiantes}" var="estudiante" styleClass="tabla" scrollable="true" scrollRows="">
                     <f:facet name="header">
-                        Estudiantes
+                        Lista de estudiantes
                     </f:facet>
 
                     <p:column headerText="Documento">
@@ -44,9 +44,7 @@
                                          title="Ver asignaturas" value="Ver asignaturas">
                             <f:setPropertyActionListener value="#{estudiante}" target="#{estudianteBean.estudianteSeleccionado}"/>
                         </p:commandButton>
-                        <p:commandButton id="btn-eliminar-estudiante" value="Eliminar" actionListener="#{estudianteBean.eliminar(estudiante)}" update=":form">
-                            <!--<f:setPropertyActionListener value="{estudiante}" target="{estudianteBean.estudianteSeleccionado}"/>-->
-                        </p:commandButton>
+                        <p:commandButton id="btn-eliminar-estudiante" value="Eliminar" actionListener="#{estudianteBean.eliminar(estudiante)}" update=":form" />
                     </p:column>
 
                     <f:facet name="footer">
