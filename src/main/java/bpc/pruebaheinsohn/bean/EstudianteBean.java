@@ -150,7 +150,12 @@ public class EstudianteBean implements Serializable {
         persist(JsfUtil.PersistAction.UPDATE, "Estudiante actualizado correctamente");
     }
 
-    public void eliminar() {
+    public void eliminar(Estudiante estudiante) {
+        if (estudiante != null) {
+            estudianteSeleccionado = estudiante;
+        } else {
+            JsfUtil.mostrarMensajeError("No ha seleccionado ningún estudiante");
+        }
         persist(JsfUtil.PersistAction.DELETE, "Estudiante eliminado correctamente");
     }
 

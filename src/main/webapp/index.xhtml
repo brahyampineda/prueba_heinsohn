@@ -44,8 +44,8 @@
                                          title="Ver asignaturas" value="Ver asignaturas">
                             <f:setPropertyActionListener value="#{estudiante}" target="#{estudianteBean.estudianteSeleccionado}"/>
                         </p:commandButton>
-                        <p:commandButton id="btn-eliminar-estudiante" value="Eliminar" actionListener="#{estudianteBean.eliminar()}" update="@form">
-                            <f:setPropertyActionListener value="#{estudiante}" target="#{estudianteBean.estudianteSeleccionado}"/>
+                        <p:commandButton id="btn-eliminar-estudiante" value="Eliminar" actionListener="#{estudianteBean.eliminar(estudiante)}" update=":form">
+                            <!--<f:setPropertyActionListener value="{estudiante}" target="{estudianteBean.estudianteSeleccionado}"/>-->
                         </p:commandButton>
                     </p:column>
 
@@ -108,7 +108,7 @@
 
         </div>
         <footer>
-            Brahyam Pineda Cardona
+            Brahyam Pineda Cardona, 2021
         </footer>
     </h:body>
 
