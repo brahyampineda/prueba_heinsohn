@@ -1,0 +1,38 @@
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    text-align: center;
+    text-transform: uppercase;
+    color: red;
+    font-size: 1.2em;
+}
+
+footer {
+    background: red;
+    color: white;
+    text-align: right;
+}
+
+header, footer {
+    border: 3px solid red;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.tabla {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.ui-button {
+    margin: 3px !important;
+    background: red !important;
+}
+
+.ui-selectonemenu, .ui-inputtext, .ui-selectcheckboxmenu {
+    width: 100% !important;
+}

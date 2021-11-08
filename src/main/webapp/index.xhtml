@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Prueba Heinsohn</title>
+        <link rel="stylesheet" href="css/index.css" />
+    </h:head>
+    <h:body>
+        <header>
+            <h1>PRUEBA HEINSOHN</h1>
+        </header>
+        <div id="main">
+            <h:form id="form">
+                <p:growl id="growl" life="3000" />
+
+                <p:dataTable id="tbl-estudiantes" value="#{estudianteBean.lstEstudiantes}" var="estudiante" styleClass="tabla" scrollable="true" scrollRows="7">
+                    <f:facet name="header">
+                        Estudiantes
+                    </f:facet>
+
+                    <p:column headerText="Documento">
+                        <h:outputText value="#{estudiante.tipoDocumento} - #{estudiante.numeroDocumento}"/>
+                    </p:column>
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{estudiante.nombre} #{estudiante.apellidos}"/>
+                    </p:column>
+
+                    <p:column headerText="Email">
+                        <h:outputText value="#{estudiante.email}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha nacimiento">
+                        <h:outputText value="#{estudiante.fechaNacimiento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton update=":form:dlg-asignaturas-estudiante" oncomplete="PF('asignaturas_estudiante').show()"
+                                         title="Ver asignaturas" value="Ver asignaturas">
+                            <f:setPropertyActionListener value="#{estudiante}" target="#{estudianteBean.estudianteSeleccionado}"/>
+                        </p:commandButton>
+                        <p:commandButton id="btn-eliminar-estudiante" value="Eliminar" actionListener="#{estudianteBean.eliminar()}" update="@form">
+                            <f:setPropertyActionListener value="#{estudiante}" target="#{estudianteBean.estudianteSeleccionado}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btn-crear-Estudiante" value="Crear estudiante" actionListener="#{estudianteBean.preparaCrear()}" update=":form-crear-estudiante:display" oncomplete="PF('wdg-crear-estudiante').show()"/>
+                    </f:facet>
+                </p:dataTable>
+
+                <p:dialog id="dlg-asignaturas-estudiante" widgetVar="asignaturas_estudiante" modal="true" resizable="false" appendTo="@(body)" dynamic="true" style="width: 50% !important"
+                          header="Estudiante: #{estudianteBean.estudianteSeleccionado.nombre} #{estudianteBean.estudianteSeleccionado.apellidos}">
+                    <p:dataTable id="tbl-asignaturas-estudiante" value="#{estudianteBean.estudianteSeleccionado.lstRelEstudianteAsignatura}" var="item" styleClass="tabla">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{item.asignatura.idAsignatura}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{item.asignatura.nombre}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+
+            </h:form>
+
+            <p:dialog id="dlg-crear-estudiante" widgetVar="wdg-crear-estudiante" modal="true" resizable="false" appendTo="@(body)" header="Crear estudiante">
+                <h:form id="form-crear-estudiante">
+                    <h:panelGroup id="display">
+                        <h:panelGrid columns="2" rendered="#{estudianteBean.estudianteSeleccionado != null}">
+                            <p:outputLabel value="Tipo de documento" for="tipoDocumento" />
+                            <p:selectOneMenu id="tipoDocumento" value="#{estudianteBean.estudianteSeleccionado.tipoDocumento}" title="Tipo de documento" 
+                                             required="true" requiredMessage="Debe seleccionar el tipo de documento">
+                                <f:selectItem noSelectionOption="true" />
+                                <f:selectItems value="#{estudianteBean.lstTiposDocumento}" var="tipoDocumento" itemLabel="#{tipoDocumento}" itemValue="#{tipoDocumento}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Número de documento" for="numeroDocumento" />
+                            <p:inputText id="numeroDocumento" value="#{estudianteBean.estudianteSeleccionado.numeroDocumento}" title="Número de documento" required="true" requiredMessage="Debe ingresar el número de documento"/>
+
+                            <p:outputLabel value="Nombre" for="nombre" />
+                            <p:inputText id="nombre" value="#{estudianteBean.estudianteSeleccionado.nombre}" title="Nombre" required="true" requiredMessage="Debe ingresar el nombre"/>
+
+                            <p:outputLabel value="Apellidos" for="apellidos" />
+                            <p:inputText id="apellidos" value="#{estudianteBean.estudianteSeleccionado.apellidos}" title="Apellidos" required="true" requiredMessage="Debe ingresar los apellidos"/>
+
+                            <p:outputLabel value="Email" for="email" />
+                            <p:inputText id="email" value="#{estudianteBean.estudianteSeleccionado.email}" title="Email" />
+
+                            <p:outputLabel value="Fecha de nacimiento" for="fechaNacimiento" />
+                            <p:calendar id="fechaNacimiento" pattern="dd/MM/yyyy" value="#{estudianteBean.estudianteSeleccionado.fechaNacimiento}" title="Fecha de nacimiento"  showOn="button"/>
+
+                            <p:outputLabel value="Asignaturas" for="asignaturas" />
+                            <p:selectCheckboxMenu id="asignaturas" value="#{estudianteBean.lstAsignaturasSeleccionadas}" label="Asignaturas" multiple="true"
+                                                  filter="true" filterMatchMode="startsWith" scrollHeight="200" converter="#{AsignaturaConverter}">
+                                <f:selectItems value="#{estudianteBean.lstAsignaturas}" var="item" itemLabel="#{item.nombre}" itemValue="#{item.idAsignatura}"/>
+                            </p:selectCheckboxMenu>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{estudianteBean.crear()}" value="Guardar" update=":form-crear-estudiante,:form, :form:growl" />
+                        <p:commandButton value="Cancelar" onclick="PF('wdg-crear-estudiante').hide()"/>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+        </div>
+        <footer>
+            Brahyam Pineda Cardona
+        </footer>
+    </h:body>
+
+
+
+</html>
+
